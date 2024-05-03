@@ -2,7 +2,7 @@
 marp: true
 theme: your-theme
 paginate: true
-header: 'Your Title - subscribe us on <https://youtube.com/@semusings>'
+header: 'Akka - subscribe us on <https://youtube.com/@semusings>'
 ---
 
 <style>
