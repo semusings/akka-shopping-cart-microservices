@@ -16,7 +16,7 @@ section {
 
 ## Shopping Cart - Akka {CQRS + gRPC} Microservices
 
-**Architecture Diagram**
+_Architecture Diagram_
 
 ![](etc/marp/assets/overview.png)
 
