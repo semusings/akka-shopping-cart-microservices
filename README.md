@@ -30,4 +30,5 @@ footer: © Software Engineering Musings - <https://bhuwanupadhyay.dev/>
 
 ### References
 
+- <https://github.com/apache/pekko-samples>
 
