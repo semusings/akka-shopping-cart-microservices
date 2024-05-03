@@ -6,21 +6,16 @@ header: 'Your Title - subscribe us on <https://youtube.com/@semusings>'
 footer: © Software Engineering Musings - <https://bhuwanupadhyay.dev/>
 ---
 
-# Your Title
-
-**Tags:**
-
-- Github
-
 ---
 
-## Background
+## Shopping Cart - Akka {CQRS + gRPC} Microservices
 
----
+**Architecture Diagram**
 
-## Your Diagram
+![](etc/marp/assets/overview.png)
 
-![](etc/marp/assets/design.png)
+- Photo Credit: https://developer.lightbend.com/docs/akka-guide/microservices-tutorial/overview.html
+- Example Credit: https://developer.lightbend.com/docs/akka-guide/microservices-tutorial/template.html
 
 ---
 
