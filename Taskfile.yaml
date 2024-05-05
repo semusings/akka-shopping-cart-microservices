@@ -1,0 +1,21 @@
+version: '3'
+
+includes:
+  analytics-service:
+    taskfile: ./Taskfile.service.yaml
+    vars:
+      SRC_ROOT: ./shopping-analytics-service
+  cart-service:
+    taskfile: ./Taskfile.service.yaml
+    vars:
+      SRC_ROOT: ./shopping-cart-service
+  order-service:
+    taskfile: ./Taskfile.service.yaml
+    vars:
+      SRC_ROOT: ./shopping-order-service
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+    silent: true

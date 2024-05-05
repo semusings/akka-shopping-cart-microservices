@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+
+  shopping-cart-service1:
+    image: shopping-cart-service:latest
+    ports:
+      - "8101:8101"
+    networks:
+      - sandbox
+
+  shopping-cart-service2:
+    image: shopping-cart-service:latest
+    ports:
+      - "8102:8101"
+    networks:
+      - sandbox
+
+  shopping-cart-service3:
+    image: shopping-cart-service:latest
+    ports:
+      - "8103:8101"
+    networks:
+      - sandbox
+
+volumes: {}
+
+networks:
+  sandbox:
+    name: sandbox-net

@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  compile:
+    dir: '{{.SRC_ROOT}}'
+    cmds:
+      - mvn clean compile
+    silent: true
+  build:
+    dir: '{{.SRC_ROOT}}'
+    cmds:
+      - mvn clean install -DskipTests
+    silent: true
+  exec-local1:
+    dir: '{{.SRC_ROOT}}'
+    cmds:
+      - mvn compile exec:exec -DAPP_CONFIG=local1.conf
+    silent: true
+  exec-local2:
+    dir: '{{.SRC_ROOT}}'
+    cmds:
+      - mvn compile exec:exec -DAPP_CONFIG=local2.conf
+    silent: true
+  exec-local3:
+    dir: '{{.SRC_ROOT}}'
+    cmds:
+      - mvn compile exec:exec -DAPP_CONFIG=local3.conf
+    silent: true

@@ -272,6 +272,7 @@
                                 <from>docker.io/library/eclipse-temurin:17.0.3_7-jre-jammy</from>
                                 <tags>
                                     <tag>${version.number}</tag>
+                                    <tag>latest</tag>
                                 </tags>
                                 <entryPoint>
                                     <exec>
