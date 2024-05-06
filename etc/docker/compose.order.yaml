@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+
+  order-service1:
+    image: shopping-order-service:latest
+    hostname: order-service1
+    ports:
+      - "9301:8101"
+    networks:
+      - sandbox
+
+  order-service2:
+    image: shopping-order-service:latest
+    hostname: order-service2
+    ports:
+      - "9302:8101"
+    networks:
+      - sandbox
+
+  order-service3:
+    image: shopping-order-service:latest
+    hostname: order-service3
+    ports:
+      - "9303:8101"
+    networks:
+      - sandbox
+
+volumes: {}
+
+networks:
+  sandbox:
+    name: sandbox-net

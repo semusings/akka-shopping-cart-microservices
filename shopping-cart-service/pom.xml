@@ -276,6 +276,7 @@
                                 <entryPoint>
                                     <exec>
                                         <arg>java</arg>
+                                        <argument>-Dconfig.resource=${APP_CONFIG}</argument>
                                         <arg>-cp</arg>
                                         <arg>/maven/*</arg>
                                         <arg>shopping.cart.Main</arg>
