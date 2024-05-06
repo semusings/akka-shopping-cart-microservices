@@ -1,0 +1,6 @@
+defaults:
+  global:
+    logging:
+      level: "default:info"
+  meshConfig:
+    accessLogFile: "/dev/stdout"

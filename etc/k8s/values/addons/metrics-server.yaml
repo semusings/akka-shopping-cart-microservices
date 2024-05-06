@@ -1,0 +1,7 @@
+# name: "metrics-server"
+# version: "3.12.1"
+# repository: "https://kubernetes-sigs.github.io/metrics-server/"
+
+metricsserver:
+  args:
+    - --kubelet-insecure-tls

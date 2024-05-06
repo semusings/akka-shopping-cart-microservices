@@ -1,0 +1,49 @@
+{{- if .Values.autoscaling.enabled }}
+{{- $autoscaling := .Values.autoscaling }}
+{{- $appName := .Values.conf.appName }}
+{{- $serviceName := .Values.conf.serviceName }}
+{{- $namespace := .Release.Namespace }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ $appName }}
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: {{ $appName }}
+  minReplicaCount: {{ default 1 ($autoscaling).minReplicas }}
+  maxReplicaCount: {{ default 100 ($autoscaling).maxReplicas }}
+  cooldownPeriod: {{ default 120 ($autoscaling).coolDownPeriod }}
+  pollingInterval: {{ default 1 ($autoscaling).pollingInterval }}
+  triggers:
+  {{- if $autoscaling.prometheusServerAddress }}
+    # proactive trigger, tracking request count
+    - type: prometheus
+      metadata:
+        serverAddress: {{ $autoscaling.prometheusServerAddress }}
+        query: |
+          sum(rate(istio_requests_total{destination_workload="{{ $appName }}", destination_service_name="{{ $serviceName }}", app_kubernetes_io_name="{{ $appName }}",
+          response_code!~"0",destination_workload_namespace ="{{ $namespace }}"}[1m]))
+        threshold: {{ default 35 ($autoscaling).serviceRequestCountThreshold | quote }}
+    # reactive trigger, tracking request durations
+    - type: prometheus
+      metadata:
+        serverAddress: {{ $autoscaling.prometheusServerAddress }}
+        # adding 500000 as filter to exclude large outliers that pop up
+        query: |
+          avg(rate(istio_request_duration_milliseconds_sum{destination_workload="{{ $appName }}", destination_service_name="{{ $serviceName }}", app_kubernetes_io_name="{{ $appName }}",
+          response_code!~"0",destination_workload_namespace ="{{ $namespace }}"}[3m])<500000)
+        threshold: {{ default 500 ($autoscaling).serviceRequestDurationAverage | quote }}
+  {{- end }}
+    # backup trigger in case prometheus goes down
+    - type: cpu
+      metadata:
+        type: AverageValue
+        value: {{ default 90 ($autoscaling).targetCPUUtilizationPercentage | quote }}
+  {{- if $autoscaling.targetMemoryUtilizationPercentage }}
+    - type: memory
+      metadata:
+        type: Utilization
+        value: {{ $autoscaling.targetMemoryUtilizationPercentage | quote }}
+  {{- end }}
+{{- end -}}

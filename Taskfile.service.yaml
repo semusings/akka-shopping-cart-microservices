@@ -6,6 +6,11 @@ tasks:
     cmds:
       - mvn clean compile
     silent: true
+  k8s-build:
+    dir: '{{.SRC_ROOT}}'
+    cmds:
+      - mvn clean install -DskipTests -DAPP_CONFIG=application.conf
+    silent: true
   docker-build:
     dir: '{{.SRC_ROOT}}'
     cmds:
