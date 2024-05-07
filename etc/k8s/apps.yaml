@@ -9,61 +9,40 @@ spec:
   generators:
     - list:
         elements:
-          - releaseName: addons-resources
+          - releaseName: cart-service
             serverUrl: https://kubernetes.default.svc
-            namespace: apps-system
-            chart: metrics-server
-            repoURL: https://kubernetes-sigs.github.io/metrics-server/
-            targetRevision: 3.12.1
-          - releaseName: keda
+            namespace: cart-service
+            chart: x-app
+            repoURL: https://github.com/semusings/k8s-apps.git
+            targetRevision: main
+          - releaseName: analytics-service
             serverUrl: https://kubernetes.default.svc
-            namespace: keda-system
-            chart: keda
-            repoURL: https://kedacore.github.io/charts
-            targetRevision: 2.13.2
-          - releaseName: external-secrets
+            namespace: analytics-service
+            chart: x-app
+            repoURL: https://github.com/semusings/k8s-apps.git
+            targetRevision: main
+          - releaseName: order-service
             serverUrl: https://kubernetes.default.svc
-            namespace: external-secrets
-            chart: external-secrets
-            repoURL: https://charts.external-secrets.io
-            targetRevision: 0.1.1
-          - releaseName: istio-base
-            serverUrl: https://kubernetes.default.svc
-            namespace: istio-system
-            chart: base
-            repoURL: https://istio-release.storage.googleapis.com/charts
-            targetRevision: 1.21.0-rc.0
-          - releaseName: istio-istiod
-            serverUrl: https://kubernetes.default.svc
-            namespace: istio-system
-            chart: istiod
-            repoURL: https://istio-release.storage.googleapis.com/charts
-            targetRevision: 1.21.0-rc.0
-          - releaseName: istio-ingressgateway
-            serverUrl: https://kubernetes.default.svc
-            namespace: istio-system
-            chart: gateway
-            repoURL: https://istio-release.storage.googleapis.com/charts
-            targetRevision: 1.21.0-rc.0
-          - releaseName: docker-registry
-            serverUrl: https://kubernetes.default.svc
-            namespace: docker-registry
-            chart: docker-registry
-            repoURL: https://helm.twun.io
-            targetRevision: 2.2.2
+            namespace: order-service
+            chart: x-app
+            repoURL: https://github.com/semusings/k8s-apps.git
+            targetRevision: main
   template:
     metadata:
       name: '{{chart}}'
     spec:
       project: default
       sources:
-        - repoURL: 'https://github.com/semusings/akka-shopping-cart-microservices.git'
-          targetRevision: 'main'
-          path: 'k8s/charts/{{ .chart }}'
+        - path: 'charts/{{ .chart }}'
+          repoURL: '{{repoURL}}'
+          targetRevision: '{{targetRevision}}'
           helm:
             releaseName: '{{ .releaseName }}'
             valueFiles:
-              - 'k8s/values/apps/{{ .releaseName }}.yaml'
+              - '$values/k8s/values/{{ .releaseName }}.yaml'
+        - repoURL: 'https://github.com/semusings/akka-shopping-cart-microservices.git'
+          targetRevision: 'main'
+          ref: values
       destination:
         server: '{{serverUrl}}'
         namespace: '{{namespace}}'
