@@ -35,13 +35,13 @@ jobs:
       - name: 'Build Analytics Service Image'
         run: |
           mvn clean package -DskipTests
-          IMAGE_ID=ghcr.io/${{ github.event.repository.name }}/$IMAGE_NAME          
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/$IMAGE_NAME          
           docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_ID:$IMAGE_TAG
           docker push $IMAGE_ID:$IMAGE_TAG
         env:
           IMAGE_NAME: shopping-analytics-service
           IMAGE_TAG: latest
-  
+
   push-cart-service-image:
     runs-on: ubuntu-latest
     defaults:
@@ -66,13 +66,13 @@ jobs:
       - name: 'Build Cart Service Image'
         run: |
           mvn clean package -DskipTests
-          IMAGE_ID=ghcr.io/${{ github.event.repository.name }}/$IMAGE_NAME          
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/$IMAGE_NAME          
           docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_ID:$IMAGE_TAG
           docker push $IMAGE_ID:$IMAGE_TAG
         env:
           IMAGE_NAME: shopping-cart-service
           IMAGE_TAG: latest
-  
+
   push-order-service-image:
     runs-on: ubuntu-latest
     defaults:
@@ -97,7 +97,7 @@ jobs:
       - name: 'Build Order Service Image'
         run: |
           mvn clean package -DskipTests
-          IMAGE_ID=ghcr.io/${{ github.event.repository.name }}/$IMAGE_NAME          
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/$IMAGE_NAME          
           docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_ID:$IMAGE_TAG
           docker push $IMAGE_ID:$IMAGE_TAG
         env:
