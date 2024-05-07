@@ -35,7 +35,11 @@ jobs:
       - name: 'Build Analytics Service Image'
         run: |
           mvn clean package -DskipTests
-          docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
+          docker tag $IMAGE_NAME:$IMAGE_TAG ghcr.io/akka-shopping-cart-microservices/$IMAGE_NAME:$IMAGE_TAG
+          docker push ghcr.io/akka-shopping-cart-microservices/$IMAGE_NAME:$IMAGE_TAG
+        env:
+          IMAGE_NAME: shopping-analytics-service
+          IMAGE_TAG: latest
   
   push-cart-service-image:
     runs-on: ubuntu-latest
@@ -61,7 +65,11 @@ jobs:
       - name: 'Build Cart Service Image'
         run: |
           mvn clean package -DskipTests
-          docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
+          docker tag $IMAGE_NAME:$IMAGE_TAG ghcr.io/akka-shopping-cart-microservices/$IMAGE_NAME:$IMAGE_TAG
+          docker push ghcr.io/akka-shopping-cart-microservices/$IMAGE_NAME:$IMAGE_TAG
+        env:
+          IMAGE_NAME: shopping-cart-service
+          IMAGE_TAG: latest
   
   push-order-service-image:
     runs-on: ubuntu-latest
@@ -87,5 +95,9 @@ jobs:
       - name: 'Build Order Service Image'
         run: |
           mvn clean package -DskipTests
-          docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
+          docker tag $IMAGE_NAME:$IMAGE_TAG ghcr.io/akka-shopping-cart-microservices/$IMAGE_NAME:$IMAGE_TAG
+          docker push ghcr.io/akka-shopping-cart-microservices/$IMAGE_NAME:$IMAGE_TAG
+        env:
+          IMAGE_NAME: shopping-order-service
+          IMAGE_TAG: latest
         
