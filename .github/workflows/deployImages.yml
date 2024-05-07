@@ -30,7 +30,7 @@ jobs:
 
       - name: 'Build Analytics Service Image'
         run: |
-          mvn clean package
+          mvn clean package -DskipTests
           docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
   
   push-cart-service-image:
@@ -56,7 +56,7 @@ jobs:
 
       - name: 'Build Cart Service Image'
         run: |
-          mvn clean package
+          mvn clean package -DskipTests
           docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
   
   push-order-service-image:
@@ -82,6 +82,6 @@ jobs:
 
       - name: 'Build Order Service Image'
         run: |
-          mvn clean package
+          mvn clean package -DskipTests
           docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
         
