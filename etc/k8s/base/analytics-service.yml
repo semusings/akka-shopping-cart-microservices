@@ -1,0 +1,74 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+  namespace: shopp
+spec:
+  selector:
+    app: analytics-service
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8101
+      targetPort: 8101
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: analytics-service
+  name: analytics-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: analytics-service
+  template:
+    metadata:
+      labels:
+        app: analytics-service
+        actorSystemName: analytics-service
+    spec:
+      containers:
+        - name: analytics-service
+          # use specific image version from docker publish
+          image: shopping-analytics-service:latest
+          # these will need to be increased tuned for production environments!
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: management
+            periodSeconds: 10
+            failureThreshold: 3
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet:
+              path: "/alive"
+              port: management
+            periodSeconds: 10
+            failureThreshold: 5
+            initialDelaySeconds: 20
+          ports:
+            # akka-management and bootstrap
+            - name: management
+              containerPort: 8558
+              protocol: TCP
+            - name: grpc
+              containerPort: 8101
+              protocol: TCP
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: REQUIRED_CONTACT_POINT_NR
+              value: "2"
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:InitialRAMPercentage=75 -XX:MaxRAMPercentage=75"

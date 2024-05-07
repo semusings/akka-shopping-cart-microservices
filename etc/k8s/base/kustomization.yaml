@@ -2,3 +2,5 @@ resources:
   - namespace.yaml
   - rbac.yml
   - cart-service.yml
+  - analytics-service.yml
+  - order-service.yml

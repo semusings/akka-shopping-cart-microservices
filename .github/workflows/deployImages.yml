@@ -1,0 +1,87 @@
+name: Deploy Images to GHCR
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  push-analytics-service-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: './shopping-analytics-service'
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: 'Build Analytics Service Image'
+        run: |
+          mvn clean package
+          docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
+  
+  push-cart-service-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: './shopping-cart-service'
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: 'Build Cart Service Image'
+        run: |
+          mvn clean package
+          docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
+  
+  push-order-service-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: './shopping-order-service'
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: 'Build Order Service Image'
+        run: |
+          mvn clean package
+          docker push ghcr.io/akka-shopping-cart-microservices/shopping-cart-service:latest
+        
