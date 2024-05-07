@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: "deployImages"
+  cancel-in-progress: false
+
 jobs:
   push-analytics-service-image:
     runs-on: ubuntu-latest
