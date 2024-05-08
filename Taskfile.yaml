@@ -19,3 +19,17 @@ tasks:
     cmds:
       - task --list-all
     silent: true
+  set-context:
+    cmds:
+      - kubectl config use-context docker-desktop
+    silent: true
+  deploy:
+    cmds:
+      - task: set-context
+      - kubectl apply -k ./etc/k8s
+    silent: true
+  destroy:
+    cmds:
+      - task: set-context
+      - kubectl delete -k ./etc/k8s
+    silent: true

@@ -2,7 +2,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: pod-reader
-  namespace: shopping-cart
+  namespace: k8s-system
 rules:
   - apiGroups: [""] # "" indicates the core API group
     resources: ["pods"]
@@ -12,10 +12,10 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: read-pods
-  namespace: shopping-cart
+  namespace: k8s-system
 subjects:
   - kind: User
-    name: system:serviceaccount:shopping-cart-namespace:default
+    name: system:serviceaccount:k8s-system:default
 roleRef:
   kind: Role
   name: pod-reader

@@ -2,10 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cart-service
+  name: analytics-service
+  namespace: k8s-system
 spec:
   selector:
-    app: cart-service
+    app: analytics-service
   type: NodePort
   ports:
     - protocol: TCP
@@ -16,30 +17,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: cart-service
-  name: cart-service
+    app: analytics-service
+  name: analytics-service
+  namespace: k8s-system
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: cart-service
+      app: analytics-service
   template:
     metadata:
       labels:
-        app: cart-service
-        actorSystemName: cart-service
+        app: analytics-service
+        actorSystemName: analytics-service
     spec:
       containers:
-        - name: cart-service
-          # use specific image version from docker publish
-          image: shopping-cart-service:latest
-          # these will need to be increased tuned for production environments!
-          resources:
-            limits:
-              memory: "2Gi"
-            requests:
-              memory: "2Gi"
-              cpu: "1000m"
+        - name: analytics-service
+          image: shopping-analytics-service:latest
+          imagePullPolicy: IfNotPresent
           readinessProbe:
             httpGet:
               path: /ready
@@ -71,3 +66,5 @@ spec:
               value: "2"
             - name: JAVA_TOOL_OPTIONS
               value: "-XX:InitialRAMPercentage=75 -XX:MaxRAMPercentage=75"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-service:9092"

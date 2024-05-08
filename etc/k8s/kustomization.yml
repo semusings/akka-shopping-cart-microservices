@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yml
+  - rbac.yml
+  - kafka-service.yml
+  - postgresql-service.yml
+  - cart-service.yml
+  - analytics-service.yml
+  - order-service.yml
+
+configMapGenerator:
+  - name: postgresql-service-ddl-scripts
+    namespace: k8s-system
+    options:
+      disableNameSuffixHash: true
+    files:
+      - ddl/01_create_akka_tables.sql
+      - ddl/02_create_user_tables.sql

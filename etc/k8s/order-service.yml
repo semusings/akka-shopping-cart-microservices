@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: analytics-service
-  namespace: shopp
+  name: order-service
+  namespace: k8s-system
 spec:
   selector:
-    app: analytics-service
+    app: order-service
   type: NodePort
   ports:
     - protocol: TCP
@@ -17,30 +17,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: analytics-service
-  name: analytics-service
+    app: order-service
+  name: order-service
+  namespace: k8s-system
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: analytics-service
+      app: order-service
   template:
     metadata:
       labels:
-        app: analytics-service
-        actorSystemName: analytics-service
+        app: order-service
+        actorSystemName: order-service
     spec:
       containers:
-        - name: analytics-service
-          # use specific image version from docker publish
-          image: shopping-analytics-service:latest
-          # these will need to be increased tuned for production environments!
-          resources:
-            limits:
-              memory: "2Gi"
-            requests:
-              memory: "2Gi"
-              cpu: "1000m"
+        - name: order-service
+          image: shopping-order-service:latest
+          imagePullPolicy: IfNotPresent
           readinessProbe:
             httpGet:
               path: /ready
